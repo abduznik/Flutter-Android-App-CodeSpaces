@@ -23,16 +23,40 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
 
-      - name: Ensure SDK packages
+      - name: Install Android command-line tools + SDK packages
         env:
           ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT || '' }}
         run: |
           sudo apt-get update
           sudo apt-get install -y wget unzip
-          export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
-          mkdir -p "$ANDROID_SDK_ROOT/cmdline-tools"
-          yes | sdkmanager --licenses || true
-          sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2"
+
+          export ANDROID_SDK_ROOT="${ANDROID_SDK_ROOT:-$HOME/Android/Sdk}"
+          mkdir -p "$ANDROID_SDK_ROOT"
+
+          # Download Google's command-line tools and install to cmdline-tools/latest
+          TMPDIR=$(mktemp -d)
+          cd $TMPDIR
+          echo "Downloading Android command-line tools..."
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+          unzip -q cmdline-tools.zip -d cmdline-tools-temp
+          mkdir -p "$ANDROID_SDK_ROOT/cmdline-tools/latest"
+          # Some zips include a top-level 'cmdline-tools' dir
+          if [ -d cmdline-tools-temp/cmdline-tools ]; then
+            mv cmdline-tools-temp/cmdline-tools/* "$ANDROID_SDK_ROOT/cmdline-tools/latest/"
+          else
+            mv cmdline-tools-temp/* "$ANDROID_SDK_ROOT/cmdline-tools/latest/"
+          fi
+          rm -rf $TMPDIR
+
+          # Make sdkmanager available on PATH for the remainder of the job
+          export PATH="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH"
+
+          echo "sdkmanager version:"
+          sdkmanager --version || true
+
+          # Accept licenses and install required SDK packages
+          yes | sdkmanager --sdk_root="$ANDROID_SDK_ROOT" --licenses || true
+          sdkmanager --sdk_root="$ANDROID_SDK_ROOT" "platform-tools" "platforms;android-33" "build-tools;33.0.2"
 
       - name: Flutter pub get
         run: flutter pub get
