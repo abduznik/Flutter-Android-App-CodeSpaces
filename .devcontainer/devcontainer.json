@@ -1,10 +1,14 @@
 {
   "name": "Flutter Android Development",
-  "image": "mcr.microsoft.com/devcontainers/android:ubuntu-24.04",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
     "ghcr.io/devcontainers/features/flutter:1": {
-      "version": "3.24"
-    }
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/android:1": {}
   },
   "customizations": {
     "vscode": {
