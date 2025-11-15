@@ -5,6 +5,40 @@
 .pub-cache/
 .pub/
 /build/
-pubspec.lock
 *.iml
-*.json
+
+# IDE files (but not devcontainer config)
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+
+# Local Android config (auto-generated)
+android/local.properties
+android/.gradle/
+
+# Generated Android/Gradle files
+android/app/debug/
+android/app/profile/
+android/app/release/
+android/.gradle/
+
+# iOS build artifacts (but not iOS source)
+ios/Flutter/Flutter.podspec
+ios/Pods/
+ios/Podfile.lock
+
+# Generated web files
+web/main.dart.js
+web/*.js.map
+
+# Coverage reports
+coverage/
+
+# DO NOT IGNORE THESE FILES (development essentials):
+# pubspec.lock - COMMIT THIS (reproducible builds)
+# .devcontainer/ - COMMIT THIS (codespace setup)
+# Makefile - COMMIT THIS (development commands)
+# README.md - COMMIT THIS (user guide)
+# SETUP.md - COMMIT THIS (setup documentation)
+# CONTRIBUTING.md - COMMIT THIS (contribution guidelines)
+# ARCHITECTURE.md - COMMIT THIS (architecture reference)

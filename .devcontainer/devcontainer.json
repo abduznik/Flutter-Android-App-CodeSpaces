@@ -1,0 +1,55 @@
+{
+  "name": "Flutter Android Development",
+  "image": "mcr.microsoft.com/devcontainers/android:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/flutter:1": {
+      "version": "3.24"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Dart-Code.dart-code",
+        "Dart-Code.flutter",
+        "ms-vscode.cpptools",
+        "Google.android-ndk-manager",
+        "usernamehw.errorlens",
+        "eamodio.gitlens",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "dart.enableSdkFormatter": true,
+        "dart.lineLength": 80,
+        "[dart]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "Dart-Code.dart-code"
+        },
+        "flutter.showWebServerDevToolsNotification": false,
+        "files.exclude": {
+          "**/.dart_tool": true,
+          "**/.pub-cache": true,
+          "**/build": true
+        }
+      }
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "remoteUser": "vscode",
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.android/debug.keystore,target=/home/vscode/.android/debug.keystore,type=bind,consistency=cached"
+  ],
+  "forwardPorts": [
+    5037,
+    8080
+  ],
+  "portsAttributes": {
+    "5037": {
+      "label": "ADB Server",
+      "onAutoForward": "silent"
+    },
+    "8080": {
+      "label": "Flutter Web",
+      "onAutoForward": "silent"
+    }
+  }
+}
